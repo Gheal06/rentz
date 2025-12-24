@@ -14,7 +14,20 @@ tr:hover{
     background-color: #555;
 }
 table{
-    border-collapse: collapse;
+    border-collapse:separate;
+    border-spacing: 0px;
+}
+thead{
+    position: sticky;
+    top: 0;
+    background-color: #222;
+    z-index: 2;
+}
+tbody{
+    z-index: 1;
+}
+thead td{
+    border: 1px #ddd solid;
 }
 td{
     padding: 5px;
@@ -41,6 +54,10 @@ div{
 }
 .smborder{
     border: 1px #ddd solid;
+}
+.smborder_red{
+    border: 3px red solid;
+    border-radius: 3px;
 }
 .lrborder{
     border-left: 1px #ddd solid;
@@ -69,4 +86,23 @@ div{
     0% {color: white;}
     50% {color: red;}
     100% {color: white;}
+}
+
+button{
+    border: 1px #fff solid;
+    border-radius: 2px;
+    background-color: #333;
+    margin: 2px;
+    color: white;
+}
+button:hover{
+   background-color: #555;
+}
+.undobutton{
+    color: yellow;
+    border-color: yellow;
+}
+.resetbutton{
+    color: red;
+    border-color: red;
 }
