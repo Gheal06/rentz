@@ -1,0 +1,72 @@
+body{
+    padding: 1px;
+    background-color: #222;
+    color: white;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+input{
+    margin: auto;
+    border: 1px white solid;
+    color: white;
+    background-color: #555;
+}
+tr:hover{
+    background-color: #555;
+}
+table{
+    border-collapse: collapse;
+}
+td{
+    padding: 5px;
+    border-collapse: collapse;
+}
+span{
+    color: white;
+}
+button{
+    margin: auto;
+}
+div{
+    padding: 5px;
+}
+.flex{
+    display: flex;
+}
+.centery{
+    margin:auto;
+}
+.centerx{
+    justify-content: center;
+    text-align: center;
+}
+.smborder{
+    border: 1px #ddd solid;
+}
+.lrborder{
+    border-left: 1px #ddd solid;
+    border-right: 1px #ddd solid;
+    /*border-color: #ddd solid;*/
+}
+.bluebg{
+    background-color: darkblue;
+}
+.selected{
+    background-color: #555;
+}
+.greybg{
+    background-color: #333;
+    font-size: small;
+}
+.hidden{
+    display: none;
+}
+.pulsered{
+    animation-name: redpulse;
+    animation-duration: 3s;
+    animation-iteration-count: infinite;
+}
+@keyframes redpulse {
+    0% {color: white;}
+    50% {color: red;}
+    100% {color: white;}
+}
