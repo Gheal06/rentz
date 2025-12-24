@@ -18,8 +18,10 @@ function inc_state(){
     game_state['state']=game_state['state']+1;
 }
 function reset_game(){
-    game_state={state: -3};
-    set_local_storage();
+    if(confirm("Are you sure you want to reset the game?")){
+        game_state={state: -3};
+        set_local_storage();
+    }
 }
 function set_player_cnt(){
     value=document.getElementById('player_cnt_input').value;
@@ -74,7 +76,7 @@ function prompt_player_names(table, n){
         var td=document.createElement('td');
         td.classList.add('smborder');
         var span=document.createElement('span');
-        span.innerText="Player "+(i+1)+":";
+        span.innerText="Player "+(i+1)+": ";
         var input=document.createElement('input');
         input.type='text';
         input.id='name_input'+i;
@@ -96,7 +98,7 @@ function prompt_player_names(table, n){
 let all_games=["K♥+","K♥-","♦+","♦-","Q+","Q-","Whist","Levate","Rentz","Rentz-","T+","T-"];
 let game_multiplier=[100,-100,10,-10,25,-25,20,-20,100,-100,1,1];
 let game_target_sum=[1,1,-1,-1,4,4,8,8,-1,-1,-1,-1];
-let game_colors=["red","red","red","red","white","white","white","white","white","white","white","white"];
+let game_colors=["white","white","white","white","white","white","white","white","white","white","white","white"];
 let default_checked=[1,1,0,1,0,1,1,1,1,0,0,1];
 function set_game_preferences(){
     var preferences=[],len=0;
@@ -183,7 +185,7 @@ function prompt_games(table, n){
 }
 function load_local_storage(){
     body=document.getElementById('body');
-    body.innerHTML='<center><button onclick="dec_state()" color="red">Undo</button></center><br>';
+    body.innerHTML='<center><button onclick="dec_state()" class="undobutton">Undo</button></center></div><br>';
     //console.log('a');
     game_state=localStorage.getItem('rentz_game_state');
     if(game_state == null){
@@ -193,6 +195,7 @@ function load_local_storage(){
     game_state=JSON.parse(localStorage.getItem('rentz_game_state'));
     
     if(game_state['state']==-3){ /// se alege nr de jucatori
+        body.innerHTML='';
         prompt_player_cnt();
         return;
     }
@@ -207,6 +210,7 @@ function load_local_storage(){
         return;
     }
     if(game_state['state']<=2*n*game_state['games'].length){ /// inca in joc
+        body.innerHTML='';
         draw_game_history(table, n);
         return;
     }
