@@ -141,7 +141,10 @@ function commit_game_results(to_check, n){
 }
 function draw_game_history(table, n){
     console.log('d');
+    var thead=document.createElement('thead'); 
     var header=document.createElement('tr');
+    thead.style.position='sticky';
+    thead.style.top='0';
     {
         var td=document.createElement('td');
         td.classList.add('smborder');
@@ -162,7 +165,7 @@ function draw_game_history(table, n){
         td.appendChild(span);
         header.appendChild(td);
     }
-    table.appendChild(header);
+    thead.appendChild(header);
     for(var it=0;it<game_state['games'].length;it++){
         var i=game_state['games'][it];
         var tr=document.createElement('tr');
@@ -192,8 +195,10 @@ function draw_game_history(table, n){
             td.classList.add('smborder');
             tr.appendChild(td);
         }
-        table.appendChild(tr);
+        thead.appendChild(tr);
     }
+    table.appendChild(thead);
+    var tbody=document.createElement('tbody');
     body.appendChild(table);
     var history=game_state['history'];
     var scoretable=document.createElement('table');
@@ -218,6 +223,7 @@ function draw_game_history(table, n){
                     var span=document.createElement('span');
                     span.innerText=all_games[history[i]['game_id']];
                     span.style.fontSize='small';
+                    td.classList.add('lrborder');
                     if(history[i]['nv']) span.innerText+=' (NV)'
                     td.appendChild(span);
                     historytr.appendChild(td);
@@ -229,7 +235,7 @@ function draw_game_history(table, n){
                     total_score[j]=Number(total_score[j])+delta;
                 }
             }
-            table.appendChild(historytr);
+            tbody.appendChild(historytr);
             for(var entryid=0;entryid<history[i]['details'][0].length;entryid++){
                 var details_tr=document.createElement('tr');
                 {
@@ -245,7 +251,7 @@ function draw_game_history(table, n){
                 details_tr.classList.add('historydetails_'+i);
                 details_tr.classList.add('greybg');
                 details_tr.classList.add('hidden');
-                table.appendChild(details_tr);
+                tbody.appendChild(details_tr);
             }
             historytr.addEventListener('click',(e)=>{
                 var _id=e.currentTarget.id;
@@ -258,16 +264,27 @@ function draw_game_history(table, n){
         historytr=document.createElement('tr');
         {
             var td=document.createElement('td');
-            
+            td.classList.add('lrborder');
             historytr.appendChild(td);
         }
         for(var j=0;j<n;j++){
             historytr.appendChild(create_td_with_two_spans(total_score[j],''));
         }
-        table.appendChild(historytr);
+        tbody.appendChild(historytr);
     }
-
+    table.appendChild(tbody);
     var button_div=document.createElement('div');
+    var undo_button=document.createElement('button');
+    undo_button.onclick=dec_state;
+    undo_button.classList.add('undobutton');
+    undo_button.innerHTML='Undo';
+    undo_button.style.marginRight='3rem';
+    button_div.appendChild(undo_button);
+    var reset_button=document.createElement('button');
+    reset_button.onclick=reset_game;
+    reset_button.classList.add('resetbutton');
+    reset_button.innerHTML='Reset Game';
+    reset_button.style.marginLeft='3rem';
     //button_div.classList.add('flex');
     button_div.classList.add('centerx');
     body.appendChild(button_div);
@@ -279,9 +296,9 @@ function draw_game_history(table, n){
             console.log(game_state['state']);
         });
         button_div.appendChild(button);
-        return;
+        button_div.appendChild(reset_button);
     }
-    if(game_state['state']%2==0){
+    else if(game_state['state']%2==0){
         var j=game_state['state']/2%n;
         for(var it=0;it<game_state['games'].length;it++){
             i=game_state['games'][it];
@@ -296,6 +313,7 @@ function draw_game_history(table, n){
         var button2=document.createElement('button'); button2.innerText='Submit (Blind)';
         button2.addEventListener('click',()=>{select_game(table,n,1);});
         button_div.appendChild(button2);
+        button_div.appendChild(reset_button);
     }
     else{
         var state=Math.floor(game_state['state']/2);
@@ -352,5 +370,6 @@ function draw_game_history(table, n){
         var button=document.createElement('button'); button.innerText='Submit';
         button.addEventListener('click',()=>{commit_game_results(to_check,n);});
         button_div.appendChild(button);
+        button_div.appendChild(reset_button);
     }
 }
