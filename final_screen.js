@@ -80,8 +80,14 @@ function draw_final_screen(body, n){
     
     var partial_scores=compute_partial_scores(n),history=game_state['history'];;
     var sorted=[];
-    for(var i=0;i<n;i++) sorted[i]=[partial_scores[partial_scores.length-1][i],i];
-    sorted.sort();
+    for(var i=0;i<n;i++) sorted[i]=[Number(partial_scores[partial_scores.length-1][i]),Number(i)];
+    sorted.sort((a,b) => {
+        if(a[0]>b[0]) return -1;
+        if(a[0]<b[0]) return 1;
+        if(a[1]>b[1]) return -1;
+        if(a[1]<b[1]) return 1;
+        return 0;
+    });
     console.log(partial_scores);
     var minval=0,maxval=0;
     for(var i=0;i<=history.length;i++){
@@ -96,8 +102,8 @@ function draw_final_screen(body, n){
     //div.classList.add('flex');
     div.classList.add('centerx');
     output=document.createElement('canvas');
-    output.height=Math.floor(window.screen.availHeight*0.8);
-    output.width=Math.floor(window.screen.availWidth*0.9);
+    output.height=Math.floor(window.screen.availHeight*0.75);
+    output.width=Math.floor(window.screen.availWidth*0.85);
     ctx=output.getContext("2d");
     //drawvertline(0.1,3);
     //drawvertline(0.9,1);
@@ -130,11 +136,6 @@ function draw_final_screen(body, n){
         }
     }
     output.classList.add('smborder');
-    div.appendChild(output);
-    div.appendChild(document.createElement('br'));
-    var h1=document.createElement('h1');
-    h1.innerText='Leaderboard';
-    div.appendChild(h1);
     var div2=document.createElement('div');
     div2.classList.add('flex');
     div2.classList.add('centerx');
@@ -203,6 +204,26 @@ function draw_final_screen(body, n){
         table.appendChild(tr);
     }
     div2.appendChild(table);
+    var sep=document.createElement('div');
+    sep.classList.add('smborder');
+    sep.classList.add('centery');
+    sep.style.width='90%';
+    sep.style.padding='0px';
+    div.appendChild(sep);
+    var h1=document.createElement('h1');
+    h1.innerText='Leaderboard';
+    div.appendChild(h1);
     div.appendChild(div2);
+    var h2=document.createElement('h2');
+    h2.innerText='Point history';
+    div.appendChild(document.createElement('br'));
+    sep=document.createElement('div');
+    sep.classList.add('smborder');
+    sep.classList.add('centery');
+    sep.style.width='90%';
+    sep.style.padding='0px';
+    div.appendChild(sep);
+    div.appendChild(h2);
+    div.appendChild(output);
     body.appendChild(div);
 }
