@@ -13,6 +13,9 @@ input{
 tr:hover{
     background-color: #555;
 }
+tr td.nohover{
+    background-color: #222;
+}
 table{
     border-collapse:separate;
     border-spacing: 0px;
@@ -68,10 +71,10 @@ div{
     background-color: darkblue;
 }
 .selected{
-    background-color: #555;
+    background-color: #000099;
 }
 .greybg{
-    background-color: #333;
+    background-color: #000066;
     font-size: small;
 }
 .hidden{
