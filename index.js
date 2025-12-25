@@ -1,7 +1,7 @@
 let player_colors=["deepskyblue","red","lime","yellow","magenta","orange"];
 var game_state=null, body;
 function set_local_storage(){
-    console.log(game_state);
+    //console.log(game_state);
     localStorage.setItem('rentz_game_state',JSON.stringify(game_state));
     load_local_storage();
 }
@@ -11,14 +11,14 @@ function dec_state(){
     //if(game_state['state']==-1) game_state.removeAttribute('player_names');
     //if(game_state['state']==0) game_state.removeAttribute('player_names');
     game_state['state']=game_state['state']-1;
-    console.log(game_state);
+    //console.log(game_state);
     set_local_storage();
 }
 function inc_state(){
     game_state['state']=game_state['state']+1;
 }
-function reset_game(){
-    if(confirm("Are you sure you want to reset the game?")){
+function reset_game(ask_confirm=1){
+    if(!ask_confirm || confirm("Are you sure you want to reset the game?")){
         game_state={state: -3};
         set_local_storage();
     }
@@ -48,6 +48,7 @@ function prompt_player_cnt(){
     input.max=6;
     input.value=4;
     var submit=document.createElement('button');
+    submit.classList.add('centery');
     submit.onclick=set_player_cnt;
     submit.innerText='Submit';
     div.appendChild(p);
@@ -57,11 +58,11 @@ function prompt_player_cnt(){
 }
 function set_player_names(n){
     //console.log('a');
-    console.log(n);
+    //console.log(n);
     var names = [];
     for(var i=0;i<n;i++){
         var name=document.getElementById('name_input'+i).value;
-        console.log(name);
+        //console.log(name);
         if(name==undefined || name.length==0) return;
         names[i]=name;
     }
@@ -88,6 +89,7 @@ function prompt_player_names(table, n){
     body.appendChild(table);
     {
         var td=document.createElement('td');
+        td.classList.add('nohover');
         var submit=document.createElement('button');
         submit.addEventListener('click',() => {set_player_names(n);});
         submit.innerText='Submit';
@@ -189,7 +191,7 @@ function load_local_storage(){
     //console.log('a');
     game_state=localStorage.getItem('rentz_game_state');
     if(game_state == null){
-        reset_game();
+        reset_game(0);
         return;
     }
     game_state=JSON.parse(localStorage.getItem('rentz_game_state'));
