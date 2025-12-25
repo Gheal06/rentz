@@ -66,19 +66,19 @@ function toggle_class(class_name){
     console.log(v);
     for(var i=0;i<v.length;i++){
         var it=v[i];
-        console.log(it.classList);
+        //console.log(it.classList);
         if(it.classList.contains('hidden')) it.classList.remove('hidden');
         else it.classList.add('hidden');
     }
 }
 function select_game(table, n, nv){
-    console.log(nv);
+    //console.log(nv);
     var state=game_state['state'];
     var j=state/2%n,i=-1;
     for(var it=0;it<game_state['games'].length;it++){
         i=game_state['games'][it];
         if(document.getElementById('gameradio_'+i+"_"+j).checked){
-            console.log(nv,(nv?"NV":"X"));
+            //console.log(nv,(nv?"NV":"X"));
             document.getElementById('gamecell_'+i+"_"+j).innerText=(nv?"NV":"X");
             game_state['history'][state/2]={game_id: i, nv: nv};
             inc_state();
@@ -106,7 +106,7 @@ function commit_game_results(to_check, n){
                 if(val<0 || val>row['sum']) ok=0;
                 s+=val;
             }
-            console.log('here',s,row['sum']);
+            //console.log('here',s,row['sum']);
             if(s!=row['sum']) ok=0;
         }
     });
@@ -124,7 +124,7 @@ function commit_game_results(to_check, n){
             game_state['history'][state]['details'][i][rowid]={};
             game_state['history'][state]['details'][i][rowid]['key']=row['tablerow'].children[i+1].children[0].innerText;
             game_state['history'][state]['details'][i][rowid]['val']=Number(row['tablerow'].children[i+1].children[1].value);
-            console.log(i,row['tablerow'].children[i+1].children[1].value,row.score);
+            ///console.log(i,row['tablerow'].children[i+1].children[1].value,row.score);
             if(row['is_rentz']){
                 console.log(row.score);
                 game_state['history'][state]['details'][i][rowid]['delta']=(Number(n)+1-Number(row['tablerow'].children[i+1].children[1].value))*row.score;
@@ -132,7 +132,7 @@ function commit_game_results(to_check, n){
             else
                 game_state['history'][state]['details'][i][rowid]['delta']=Number(row['tablerow'].children[i+1].children[1].value)*row.score;
             game_state['history'][state]['totaldelta'][i]+=game_state['history'][state]['details'][i][rowid]['delta'];
-            console.log(game_state['history'][state]['totaldelta'][i]);
+            //console.log(game_state['history'][state]['totaldelta'][i]);
         }
         rowid++;
     });
@@ -140,7 +140,7 @@ function commit_game_results(to_check, n){
     set_local_storage();
 }
 function draw_game_history(table, n){
-    console.log('d');
+    //console.log('d');
     var thead=document.createElement('thead'); 
     var header=document.createElement('tr');
     thead.style.position='sticky';
@@ -209,7 +209,7 @@ function draw_game_history(table, n){
         var game_id=history[i]['game_id'];
         var nv=history[i]['nv'];
         var cell_span=document.getElementById('gamecell_'+game_id+'_'+player_id);
-        console.log(game_id,player_id);
+        //console.log(game_id,player_id);
         if(nv) cell_span.innerText='NV';
         else cell_span.innerText='X';
         if(i*2+1==game_state['state']) cell_span.classList.add('pulsered');
@@ -228,10 +228,24 @@ function draw_game_history(table, n){
                     td.appendChild(span);
                     historytr.appendChild(td);
                 }
+                //console.log('here', n);
                 for(var j=0;j<n;j++){
-                    console.log(history[i]['totaldelta'][j]);
+                    //console.log(history[i]['totaldelta'][j]);
                     var delta=Number(history[i]['totaldelta'][j]);
                     historytr.appendChild(create_td_with_two_spans(total_score[j],delta));
+                    //console.log(historytr.children);
+                    var td=historytr.children[historytr.children.length-1];
+                    //console.log(td);
+
+                    td.children[1].style.fontSize='small';
+                    td.children[1].style.color='#ddd';
+                    if(td.children[1].innerText[0]=='0'){
+                        td.children[1].innerText='(0)';
+                    }
+                    else{
+                        if(td.children[1].innerText[0]!='-') td.children[1].innerText='+'+td.children[1].innerText;
+                        td.children[1].innerText='('+td.children[1].innerText+')';
+                    }
                     total_score[j]=Number(total_score[j])+delta;
                 }
             }
@@ -240,12 +254,22 @@ function draw_game_history(table, n){
                 var details_tr=document.createElement('tr');
                 {
                     var td=document.createElement('td');
+                    td.classList.add('lrborder');
                     details_tr.appendChild(td);
                 }
                 for(var j=0;j<n;j++){
                     var entry=history[i]['details'][j][entryid]; /// key, val, delta
-                    console.log(entry);
+                    //console.log(entry);
                     var td=create_td_with_two_spans(entry.key+entry.val,entry.delta);
+                    td.children[0].style.fontSize='smaller';
+                    td.children[1].style.fontSize='smaller';
+                    td.children[1].style.color='#ddd';
+                    if(td.children[1].innerText=='0')
+                        td.children[1].innerText='(0)';
+                    else{
+                        if(td.children[1].innerText[0]!='-') td.children[1].innerText='+'+td.children[1].innerText;
+                        td.children[1].innerText='('+td.children[1].innerText+')';
+                    }
                     details_tr.appendChild(td);
                 }
                 details_tr.classList.add('historydetails_'+i);
@@ -264,11 +288,19 @@ function draw_game_history(table, n){
         historytr=document.createElement('tr');
         {
             var td=document.createElement('td');
-            td.classList.add('lrborder');
+            var span=document.createElement('span');
+            span.innerText='Scores:';
+            td.style.borderTopWidth='3px';
+            td.appendChild(span);
+            td.classList.add('smborder');
             historytr.appendChild(td);
         }
         for(var j=0;j<n;j++){
             historytr.appendChild(create_td_with_two_spans(total_score[j],''));
+            var td=historytr.children[historytr.children.length-1];
+            td.style.borderTopWidth='3px';
+            //td.style.fontWeight='bold';
+            td.classList.add('smborder');
         }
         tbody.appendChild(historytr);
     }
@@ -283,7 +315,7 @@ function draw_game_history(table, n){
     var reset_button=document.createElement('button');
     reset_button.onclick=reset_game;
     reset_button.classList.add('resetbutton');
-    reset_button.innerHTML='Reset Game';
+    reset_button.innerHTML='Reset';
     reset_button.style.marginLeft='3rem';
     //button_div.classList.add('flex');
     button_div.classList.add('centerx');
@@ -307,10 +339,10 @@ function draw_game_history(table, n){
                 //console.log(i,j);
             }
         }
-        var button1=document.createElement('button'); button1.innerText='Submit';
+        var button1=document.createElement('button'); button1.innerText='Play';
         button1.addEventListener('click',()=>{select_game(table,n,0);});
         button_div.appendChild(button1);
-        var button2=document.createElement('button'); button2.innerText='Submit (Blind)';
+        var button2=document.createElement('button'); button2.innerText='Play (Blind)';
         button2.addEventListener('click',()=>{select_game(table,n,1);});
         button_div.appendChild(button2);
         button_div.appendChild(reset_button);
