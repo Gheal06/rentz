@@ -43,10 +43,10 @@ function drawxlabel(x, minval, maxval, is_thick=0){
     drawtext(drawx,0.915,x,20,'white','top','center');
 }
 function drawdisk(x,y,minx,maxx,miny,maxy,r,color="#000000"){
-    console.log(x,y);
+    //console.log(x,y);
     x=adjustx(x,minx,maxx)*output.width;
     y=adjusty(y,miny,maxy)*output.height;
-    console.log(x,y,r);
+    //console.log(x,y,r);
     ctx.beginPath();
     ctx.arc(x,y,r*Math.min(output.width,output.height),0,2 * Math.PI,false);
     ctx.fillStyle = color;
@@ -88,7 +88,7 @@ function draw_final_screen(body, n){
         if(a[1]<b[1]) return 1;
         return 0;
     });
-    console.log(partial_scores);
+    //console.log(partial_scores);
     var minval=0,maxval=0;
     for(var i=0;i<=history.length;i++){
         for(var j=0;j<n;j++){
@@ -112,14 +112,14 @@ function draw_final_screen(body, n){
     //drawtext(0.085,0.1,maxval,20,'white','middle','end');
     //drawtext(0.085,0.9,minval,20,'white','middle','end');
     var xstep=Number(n);
-    console.log("xstep=",xstep);
+    //console.log("xstep=",xstep);
     drawxlabel(0,0,history.length,1);
     drawxlabel(history.length,0,history.length,1);
     for(var i=0;i+xstep<=history.length;i+=xstep){
         drawxlabel(i,0,history.length);
     }
     var ystep=Math.max(50,Math.ceil((maxval-minval)/600)*50),curry;
-    console.log(ystep);
+    //console.log(ystep);
     drawylabel(0,minval,maxval,1);
     drawylabel(minval,minval,maxval,1);
     drawylabel(maxval,minval,maxval,1);
@@ -215,7 +215,7 @@ function draw_final_screen(body, n){
     div.appendChild(h1);
     div.appendChild(div2);
     var h2=document.createElement('h2');
-    h2.innerText='Point history';
+    h2.innerText='Point History';
     div.appendChild(document.createElement('br'));
     sep=document.createElement('div');
     sep.classList.add('smborder');
