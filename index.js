@@ -98,7 +98,7 @@ function prompt_player_names(table, n){
     }
 }
 let all_games=["K♥+","K♥-","♦+","♦-","Q+","Q-","Whist","Levate","Rentz","Rentz-","T+","T-"];
-let game_multiplier=[100,-100,10,-10,25,-25,20,-20,100,-100,1,1];
+let game_multiplier=[100,-100,10,-10,25,-25,20,-20,50,-50,1,1];
 let game_target_sum=[1,1,-1,-1,4,4,8,8,-1,-1,-1,-1];
 let game_colors=["white","white","white","white","white","white","white","white","white","white","white","white"];
 let default_checked=[1,1,0,1,0,1,1,1,1,0,0,1];
